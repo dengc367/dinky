@@ -64,7 +64,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.alibaba.druid.pool.DruidPooledConnection;
 import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.SQLStatement;
 
@@ -79,14 +78,116 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class AbstractJdbcDriver extends AbstractDriver<AbstractJdbcConfig> {
 
-    protected ThreadLocal<Connection> conn = new ThreadLocal<>();
+    /**
+     * Self-healing connection holder.
+     *
+     * <p>Most driver implementations historically accessed {@code conn.get()} directly. To mitigate stale pooled
+     * connections (e.g. "Broken pipe") without touching every call site, we override {@link ThreadLocal#get()} to
+     * validate and transparently reconnect when needed.
+     *
+     * <p>Important: Use {@link HealingConnectionThreadLocal#peek()} instead of {@code conn.get()} in close/health checks
+     * to avoid creating a new connection inadvertently.
+     */
+    protected final HealingConnectionThreadLocal conn = new HealingConnectionThreadLocal();
 
     private DruidDataSource dataSource;
     protected String validationQuery = "select 1";
 
+    /** Avoid validating on every get(); throttle to reduce overhead. */
+    private static final long VALIDATION_INTERVAL_MS = 30_000L;
+    private static final int VALIDATION_TIMEOUT_SECONDS = 2;
+
     abstract String getDriverClass();
 
     public abstract AbstractJdbcTypeConvert getTypeConvert();
+
+    protected class HealingConnectionThreadLocal extends ThreadLocal<Connection> {
+
+        private final ThreadLocal<Long> lastValidationAt = new ThreadLocal<>();
+
+        /** Raw access without triggering validation/reconnect. */
+        public Connection peek() {
+            return super.get();
+        }
+
+        @Override
+        public Connection get() {
+            Connection c = super.get();
+            if (c == null) {
+                Connection nc = newConnection();
+                super.set(nc);
+                lastValidationAt.set(System.currentTimeMillis());
+                return nc;
+            }
+
+            if (!isConnectionUsable(c)) {
+                closeQuietly(c);
+                Connection nc = newConnection();
+                super.set(nc);
+                lastValidationAt.set(System.currentTimeMillis());
+                return nc;
+            }
+
+            // Throttled validation to reduce per-call overhead.
+            long now = System.currentTimeMillis();
+            Long last = lastValidationAt.get();
+            if (last == null || now - last >= VALIDATION_INTERVAL_MS) {
+                lastValidationAt.set(now);
+                if (!isConnectionValid(c)) {
+                    closeQuietly(c);
+                    Connection nc = newConnection();
+                    super.set(nc);
+                    return nc;
+                }
+            }
+
+            return c;
+        }
+    }
+
+    private Connection newConnection() {
+        try {
+            Class.forName(getDriverClass());
+            return createDataSource().getConnection();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private boolean isConnectionUsable(Connection c) {
+        try {
+            return c != null && !c.isClosed();
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    private boolean isConnectionValid(Connection c) {
+        try {
+            // JDBC standard method; preferred when supported.
+            return c.isValid(VALIDATION_TIMEOUT_SECONDS);
+        } catch (Throwable ignore) {
+            // Some drivers may not support isValid properly; fallback to validationQuery.
+            try (Statement st = c.createStatement()) {
+                st.setQueryTimeout(VALIDATION_TIMEOUT_SECONDS);
+                st.execute(validationQuery);
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        }
+    }
+
+    private void closeQuietly(Connection c) {
+        if (c == null) {
+            return;
+        }
+        try {
+            c.close();
+        } catch (Exception e) {
+            // ignore
+        }
+    }
 
     @Override
     public String test() {
@@ -143,23 +244,17 @@ public abstract class AbstractJdbcDriver extends AbstractDriver<AbstractJdbcConf
 
     @Override
     public Driver connect() {
-        if (Asserts.isNull(conn.get())) {
-            try {
-                Class.forName(getDriverClass());
-                DruidPooledConnection connection = createDataSource().getConnection();
-                conn.set(connection);
-            } catch (ClassNotFoundException | SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        // Trigger self-healing get(): create/validate/reconnect as needed.
+        conn.get();
         return this;
     }
 
     @Override
     public boolean isHealth() {
         try {
-            if (Asserts.isNotNull(conn.get())) {
-                return !conn.get().isClosed();
+            Connection c = conn.peek();
+            if (Asserts.isNotNull(c)) {
+                return !c.isClosed();
             }
             return false;
         } catch (Exception e) {
@@ -171,8 +266,9 @@ public abstract class AbstractJdbcDriver extends AbstractDriver<AbstractJdbcConf
     @Override
     public void close() {
         try {
-            if (Asserts.isNotNull(conn.get())) {
-                conn.get().close();
+            Connection c = conn.peek();
+            if (Asserts.isNotNull(c)) {
+                c.close();
                 conn.remove();
             }
         } catch (SQLException e) {
@@ -806,7 +902,6 @@ public abstract class AbstractJdbcDriver extends AbstractDriver<AbstractJdbcConf
     public List<Map<String, String>> getSplitSchemaList() {
         PreparedStatement preparedStatement = null;
         ResultSet results = null;
-        IDBQuery dbQuery = getDBQuery();
         String sql = "select DATA_LENGTH,TABLE_NAME AS `NAME`,TABLE_SCHEMA AS `Database`,TABLE_COMMENT"
                 + " AS COMMENT,TABLE_CATALOG AS `CATALOG`,TABLE_TYPE AS `TYPE`,ENGINE AS"
                 + " `ENGINE`,CREATE_OPTIONS AS `OPTIONS`,TABLE_ROWS AS"

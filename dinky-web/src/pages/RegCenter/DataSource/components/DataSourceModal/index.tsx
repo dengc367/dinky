@@ -95,12 +95,39 @@ const DataSourceModal: React.FC<DataSourceModalProps> = (props) => {
     form.setFieldsValue({ flinkTemplate: value });
   };
 
+  function normalizeKyuubiConfig(item: Partial<DataSources.DataSource>) {
+    if (item?.type !== 'Kyuubi' || !item?.connectConfig) {
+      return item;
+    }
+    const connectConfig: any = { ...(item.connectConfig as any) };
+    if (Array.isArray(connectConfig.conf)) {
+      const conf: Record<string, string> = {};
+      connectConfig.conf.forEach((kv: any) => {
+        if (kv?.key) conf[kv.key] = kv?.value;
+      });
+      connectConfig.conf = conf;
+    }
+    if (Array.isArray(connectConfig.sessionConfigs)) {
+      const conf: Record<string, string> = {};
+      connectConfig.sessionConfigs.forEach((kv: any) => {
+        if (kv?.key) conf[kv.key] = kv?.value;
+      });
+      connectConfig.sessionConfigs = conf;
+    }
+    if (Array.isArray(connectConfig.args)) {
+      connectConfig.args = connectConfig.args
+        .map((a: any) => (a && typeof a === 'object' ? a.value : a))
+        .filter((a: any) => a !== undefined && a !== null && a !== '');
+    }
+    return { ...item, connectConfig };
+  }
+
   /**
    * test connect
    */
   const handleTestConnect = async () => {
     const fieldsValue = await form.validateFields();
-    onTest({ ...values, ...fieldsValue });
+    onTest(normalizeKyuubiConfig({ ...values, ...fieldsValue }));
   };
 
   /**
@@ -109,7 +136,7 @@ const DataSourceModal: React.FC<DataSourceModalProps> = (props) => {
   const submitForm = async () => {
     const fieldsValue = await form.validateFields();
     setSubmitting(true);
-    onSubmit({ ...values, ...fieldsValue });
+    onSubmit(normalizeKyuubiConfig({ ...values, ...fieldsValue }));
     handleCancel();
   };
 
@@ -139,7 +166,7 @@ const DataSourceModal: React.FC<DataSourceModalProps> = (props) => {
 
   const handleTypeChange = (value: any) => {
     if (value.type) setDbType(value.type);
-    if (value.type === 'Hive' || value.type === 'Presto') {
+    if (value.type === 'Hive' || value.type === 'Presto' || value.type === 'Kyuubi') {
       setExcludeFormItem(true);
     } else {
       setExcludeFormItem(false);

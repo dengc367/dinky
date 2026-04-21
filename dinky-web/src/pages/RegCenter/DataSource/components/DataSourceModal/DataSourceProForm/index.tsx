@@ -40,6 +40,7 @@ import { Values } from 'async-validator';
 import React, { useState } from 'react';
 import PaimonSourceForm from '@/pages/RegCenter/DataSource/components/DataSourceView/GeneralJdbc/PaimonSourceForm';
 import JdbcSourceForm from '@/pages/RegCenter/DataSource/components/DataSourceView/GeneralJdbc/JdbcSourceForm';
+import KyuubiSourceForm from '@/pages/RegCenter/DataSource/components/DataSourceView/GeneralJdbc/KyuubiSourceForm';
 
 type DataSourceProFormProps = {
   values: Partial<DataSources.DataSource>;
@@ -65,6 +66,8 @@ const DataSourceProForm: React.FC<DataSourceProFormProps> = (props) => {
     switch (type) {
       case DATA_SOURCE_TYPE.PAIMON:
         return <PaimonSourceForm form={form} />;
+      case DATA_SOURCE_TYPE.KYUUBI:
+        return <KyuubiSourceForm form={form} />;
       default:
         return <JdbcSourceForm form={form} />;
     }
