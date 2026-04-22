@@ -1,0 +1,21 @@
+#
+# Local Spring Boot overrides (not used until copied).
+#
+# Usage:
+#   cp dinky-admin/src/main/resources/application-local.yml.example \
+#      dinky-admin/src/main/resources/application-local.yml
+#   Edit values in application-local.yml (that file is gitignored).
+#
+# application.yml always includes profile "local", so application-local.yml is merged on startup
+# when it exists. Use it for DB host, credentials, disabling Flyway during experiments, etc.
+#
+
+spring:
+  profiles:
+    active: mysql
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/${MYSQL_DATABASE:dinky}?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: dinky
+    password: changeme
+  flyway:
+    enabled: false

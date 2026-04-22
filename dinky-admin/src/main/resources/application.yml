@@ -20,6 +20,8 @@ spring:
     include:
       - jmx
       - flyway
+      # Optional local overrides (gitignored): see application-local.yml.example
+      - local
   lifecycle:
     timeout-per-shutdown-phase: 30s
 

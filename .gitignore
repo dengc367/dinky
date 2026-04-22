@@ -46,6 +46,8 @@ dinky-web/.mfsu-production
 dinky-web/pnpm-lock.yaml
 
 dinky-admin/src/main/resources/static/*
+# Local Spring overrides (passwords / machine-specific); copy from application-local.yml.example
+dinky-admin/src/main/resources/application-local.yml
 dinky-admin/tmp/*
 dependency-reduced-pom.xml
 dinky-core/tmp/*
