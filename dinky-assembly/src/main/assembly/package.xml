@@ -248,6 +248,14 @@
             </includes>
         </fileSet>
         <fileSet>
+            <directory>${project.parent.basedir}/dinky-metadata/dinky-metadata-gravitino/target
+            </directory>
+            <outputDirectory>lib</outputDirectory>
+            <includes>
+                <include>dinky-metadata-gravitino-${project.version}.jar</include>
+            </includes>
+        </fileSet>
+        <fileSet>
             <directory>${project.parent.basedir}/dinky-alert/dinky-alert-dingtalk/target
             </directory>
             <outputDirectory>lib</outputDirectory>

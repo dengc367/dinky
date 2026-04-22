@@ -33,7 +33,8 @@ export const DATA_SOURCE_TYPE = {
   PRESTO: 'Presto',
   PHOENIX: 'Phoenix',
   HIVE: 'Hive',
-  PAIMON: 'Paimon'
+  PAIMON: 'Paimon',
+  GRAVITINO: 'Gravitino'
 };
 /**
  * data source type
@@ -96,6 +97,10 @@ export const DATA_SOURCE_TYPE_OPTIONS = [
       {
         label: 'Hive',
         value: DATA_SOURCE_TYPE.HIVE
+      },
+      {
+        label: 'Gravitino',
+        value: DATA_SOURCE_TYPE.GRAVITINO
       }
     ]
   }
