@@ -17,20 +17,21 @@
  *
  */
 
-export enum SettingConfigKeyEnum {
-  DINKY = 'Dinky',
-  FLINK = 'Flink',
-  MAVEN = 'Maven',
-  DOLPHIN_SCHEDULER = 'DolphinScheduler',
-  OAUTH = 'OAuth',
-  LDAP = 'LDAP',
-  METRIC = 'Metric',
-  RESOURCE = 'Resource',
-  ENV = 'Env',
-  APPROVAL = 'Approval'
-}
+package org.dinky.service;
 
-export enum ButtonFrontendType {
-  BOOLEAN = 'boolean',
-  OPTION = 'option'
+import org.dinky.data.result.Result;
+
+/**
+ * OAuth / Keycloak synchronization.
+ *
+ * @since 1.3.0
+ */
+public interface OAuthService {
+
+    /**
+     * Sync each Dinky user to Keycloak as a confidential OIDC client (clientId = username, secret = stored password).
+     *
+     * @return result of the operation
+     */
+    Result<Void> syncUsers();
 }

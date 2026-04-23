@@ -26,6 +26,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.freemarker.FreeMarkerAutoConfiguration;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.alibaba.druid.proxy.DruidDriver;
@@ -41,6 +42,7 @@ import lombok.SneakyThrows;
 @EnableTransactionManagement
 @SpringBootApplication(exclude = FreeMarkerAutoConfiguration.class)
 @EnableCaching
+@EnableScheduling
 public class Dinky {
 
     static {

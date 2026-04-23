@@ -73,6 +73,7 @@ export type Settings = {
   env: BaseConfigProperties[];
   flink: BaseConfigProperties[];
   maven: BaseConfigProperties[];
+  oauth: BaseConfigProperties[];
   ldap: BaseConfigProperties[];
   metrics: BaseConfigProperties[];
   resource: BaseConfigProperties[];

@@ -17,20 +17,22 @@
  *
  */
 
-export enum SettingConfigKeyEnum {
-  DINKY = 'Dinky',
-  FLINK = 'Flink',
-  MAVEN = 'Maven',
-  DOLPHIN_SCHEDULER = 'DolphinScheduler',
-  OAUTH = 'OAuth',
-  LDAP = 'LDAP',
-  METRIC = 'Metric',
-  RESOURCE = 'Resource',
-  ENV = 'Env',
-  APPROVAL = 'Approval'
-}
+package org.dinky.oauth;
 
-export enum ButtonFrontendType {
-  BOOLEAN = 'boolean',
-  OPTION = 'option'
+import lombok.Builder;
+import lombok.Value;
+
+/** Snapshot of OAuth-related settings for a provider (e.g. Keycloak). */
+@Value
+@Builder
+public class OAuthConfiguration {
+
+    /** Keycloak server base URL, without trailing slash and without {@code /realms/...}. */
+    String baseUrl;
+
+    String realm;
+
+    String adminClientId;
+
+    String adminClientSecret;
 }

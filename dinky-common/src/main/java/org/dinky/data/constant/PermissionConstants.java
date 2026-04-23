@@ -235,6 +235,11 @@ public class PermissionConstants {
     public static final String AUTH_TENANT_VIEW_USER = "auth:tenant:viewUser";
 
     /**
+     * global setting — OAuth / Keycloak
+     */
+    public static final String SETTING_GLOBAL_OAUTH_EDIT = "settings:globalsetting:oauth:edit";
+
+    /**
      * system setting
      */
     public static final String SYSTEM_SETTING_INFO_LOG_LIST = "settings:systemlog:loglist";

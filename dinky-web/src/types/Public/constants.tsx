@@ -237,6 +237,8 @@ export enum PermissionConstants {
   SETTING_GLOBAL_MAVEN_EDIT = '/settings/globalsetting/maven/edit',
   SETTING_GLOBAL_DS = '/settings/globalsetting/ds',
   SETTING_GLOBAL_DS_EDIT = '/settings/globalsetting/ds/edit',
+  SETTING_GLOBAL_OAUTH = '/settings/globalsetting/oauth',
+  SETTING_GLOBAL_OAUTH_EDIT = '/settings/globalsetting/oauth/edit',
   SETTING_GLOBAL_LDAP = '/settings/globalsetting/ldap',
   SETTING_GLOBAL_LDAP_EDIT = '/settings/globalsetting/ldap/edit',
   SETTING_GLOBAL_METRICS = '/settings/globalsetting/metrics',

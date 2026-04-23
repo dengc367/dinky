@@ -486,6 +486,22 @@ public enum Status {
     SYS_APPROVAL_SETTINGS_TASK_REVIEWER_ROLES_NOTE(211, "sys.approval.settings.taskReviewerRoles.note"),
     SYS_APPROVAL_TASK_NOT_APPROVED(212, "sys.approval.taskNotApproved"),
     SYS_APPROVAL_DUPLICATE_APPROVAL_IN_PROCESS(213, "sys.approval.duplicateInProcess"),
+
+    SYS_OAUTH_SETTINGS_ENABLE(215, "sys.oauth.settings.enable"),
+    SYS_OAUTH_SETTINGS_ENABLE_NOTE(216, "sys.oauth.settings.enable.note"),
+    SYS_OAUTH_SETTINGS_ENDPOINT(217, "sys.oauth.settings.endpoint"),
+    SYS_OAUTH_SETTINGS_ENDPOINT_NOTE(218, "sys.oauth.settings.endpoint.note"),
+    SYS_OAUTH_SETTINGS_ADMIN_CLIENT_ID(219, "sys.oauth.settings.adminClientId"),
+    SYS_OAUTH_SETTINGS_ADMIN_CLIENT_ID_NOTE(220, "sys.oauth.settings.adminClientId.note"),
+    SYS_OAUTH_SETTINGS_ADMIN_CLIENT_SECRET(221, "sys.oauth.settings.adminClientSecret"),
+    SYS_OAUTH_SETTINGS_ADMIN_CLIENT_SECRET_NOTE(222, "sys.oauth.settings.adminClientSecret.note"),
+    SYS_OAUTH_SETTINGS_CENTER(223, "sys.oauth.settings.center"),
+    SYS_OAUTH_SETTINGS_CENTER_NOTE(224, "sys.oauth.settings.center.note"),
+    SYS_OAUTH_SETTINGS_REALM(225, "sys.oauth.settings.realm"),
+    SYS_OAUTH_SETTINGS_REALM_NOTE(226, "sys.oauth.settings.realm.note"),
+    SYS_OAUTH_SETTINGS_IS_CRON(227, "sys.oauth.settings.isCron"),
+    SYS_OAUTH_SETTINGS_IS_CRON_NOTE(228, "sys.oauth.settings.isCron.note"),
+
     /**
      *  Catalog
      */

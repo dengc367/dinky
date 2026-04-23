@@ -191,6 +191,42 @@ public class SystemConfiguration {
                     .defaultValue("Dinky")
                     .note(Status.SYS_DOLPHINSCHEDULER_SETTINGS_PROJECTNAME_NOTE);
 
+    private final Configuration<Boolean> oauthEnable = key(Status.SYS_OAUTH_SETTINGS_ENABLE)
+            .booleanType()
+            .defaultValue(false)
+            .note(Status.SYS_OAUTH_SETTINGS_ENABLE_NOTE);
+
+    private final Configuration<String> oauthEndpoint = key(Status.SYS_OAUTH_SETTINGS_ENDPOINT)
+            .stringType()
+            .defaultValue("")
+            .note(Status.SYS_OAUTH_SETTINGS_ENDPOINT_NOTE);
+
+    private final Configuration<String> oauthAdminClientId = key(Status.SYS_OAUTH_SETTINGS_ADMIN_CLIENT_ID)
+            .stringType()
+            .defaultValue("")
+            .note(Status.SYS_OAUTH_SETTINGS_ADMIN_CLIENT_ID_NOTE);
+
+    private final Configuration<String> oauthAdminClientSecret = key(Status.SYS_OAUTH_SETTINGS_ADMIN_CLIENT_SECRET)
+            .stringType()
+            .defaultValue("")
+            .desensitizedHandler(DesensitizedUtil::password)
+            .note(Status.SYS_OAUTH_SETTINGS_ADMIN_CLIENT_SECRET_NOTE);
+
+    private final Configuration<String> oauthCenter = key(Status.SYS_OAUTH_SETTINGS_CENTER)
+            .stringType()
+            .defaultValue("keycloak")
+            .note(Status.SYS_OAUTH_SETTINGS_CENTER_NOTE);
+
+    private final Configuration<String> oauthRealm = key(Status.SYS_OAUTH_SETTINGS_REALM)
+            .stringType()
+            .defaultValue("")
+            .note(Status.SYS_OAUTH_SETTINGS_REALM_NOTE);
+
+    private final Configuration<Boolean> oauthIsCron = key(Status.SYS_OAUTH_SETTINGS_IS_CRON)
+            .booleanType()
+            .defaultValue(false)
+            .note(Status.SYS_OAUTH_SETTINGS_IS_CRON_NOTE);
+
     private final Configuration<String> ldapUrl =
             key(Status.SYS_LDAP_SETTINGS_URL).stringType().defaultValue("").note(Status.SYS_LDAP_SETTINGS_URL_NOTE);
 

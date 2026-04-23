@@ -17,20 +17,16 @@
  *
  */
 
-export enum SettingConfigKeyEnum {
-  DINKY = 'Dinky',
-  FLINK = 'Flink',
-  MAVEN = 'Maven',
-  DOLPHIN_SCHEDULER = 'DolphinScheduler',
-  OAUTH = 'OAuth',
-  LDAP = 'LDAP',
-  METRIC = 'Metric',
-  RESOURCE = 'Resource',
-  ENV = 'Env',
-  APPROVAL = 'Approval'
-}
+package org.dinky.oauth;
 
-export enum ButtonFrontendType {
-  BOOLEAN = 'boolean',
-  OPTION = 'option'
+import org.dinky.data.model.rbac.User;
+
+/** Pluggable OAuth / IdP admin integration (token + per-user client sync). */
+public interface OAuthProvider {
+
+    /** Obtain an access token for admin-style API calls (e.g. client_credentials). */
+    String getAccessToken(OAuthConfiguration config);
+
+    /** Create or update the IdP client that represents the given Dinky user. */
+    void createOrUpdateClient(OAuthConfiguration config, String token, User user);
 }

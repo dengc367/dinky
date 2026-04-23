@@ -193,6 +193,7 @@ export enum API_CONSTANTS {
   SYSTEM_GET_ALL_CONFIG = '/api/sysConfig/getAll',
   SYSTEM_GET_ONE_TYPE_CONFIG = '/api/sysConfig/getConfigByType',
   SYSTEM_MODIFY_CONFIG = '/api/sysConfig/modifyConfig',
+  OAUTH_SYNC = '/api/admin/oauth/sync',
 
   // ------------------------------------ system log ------------------------------------
   SYSTEM_ROOT_LOG = '/api/system/getRootLog',

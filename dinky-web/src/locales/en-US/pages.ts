@@ -1253,6 +1253,10 @@ export default {
   'sys.setting.ds': 'DolphinScheduler Configuration',
   'sys.setting.ds.tooltip':
     'DolphinScheduler plug-in settings that allow you to push dinky tasks to the DolphinScheduler workflow',
+  'sys.setting.oauth': 'OAuth Configuration',
+  'sys.setting.oauth.tooltip': 'Keycloak confidential client sync for Dinky users',
+  'sys.oauth.settings.sync': 'Sync now',
+  'sys.oauth.settings.sync.success': 'Success: user sync completed',
   'sys.setting.flink': 'Flink Configuration',
   'sys.setting.flink.tooltip': 'Dinky docking Flink main parameters',
   'sys.setting.ldap': 'LDAP Configuration',

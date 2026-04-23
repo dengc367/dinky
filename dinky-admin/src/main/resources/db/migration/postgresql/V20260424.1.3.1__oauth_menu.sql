@@ -17,20 +17,12 @@
  *
  */
 
-export enum SettingConfigKeyEnum {
-  DINKY = 'Dinky',
-  FLINK = 'Flink',
-  MAVEN = 'Maven',
-  DOLPHIN_SCHEDULER = 'DolphinScheduler',
-  OAUTH = 'OAuth',
-  LDAP = 'LDAP',
-  METRIC = 'Metric',
-  RESOURCE = 'Resource',
-  ENV = 'Env',
-  APPROVAL = 'Approval'
-}
+INSERT INTO public.dinky_sys_menu (id, parent_id, name, path, component, perms, icon, type, display, order_num,
+                                   create_time, update_time, note)
+VALUES (179, 24, 'OAuth 配置', '/settings/globalsetting/oauth', null, 'settings:globalsetting:oauth',
+        'SettingOutlined', 'F', 0, 124, '2026-04-23 12:00:00', '2026-04-23 12:00:00', null);
 
-export enum ButtonFrontendType {
-  BOOLEAN = 'boolean',
-  OPTION = 'option'
-}
+INSERT INTO public.dinky_sys_menu (id, parent_id, name, path, component, perms, icon, type, display, order_num,
+                                   create_time, update_time, note)
+VALUES (180, 179, '编辑', '/settings/globalsetting/oauth/edit', null, 'settings:globalsetting:oauth:edit',
+        'EditOutlined', 'F', 0, 125, '2026-04-23 12:00:00', '2026-04-23 12:00:00', null);

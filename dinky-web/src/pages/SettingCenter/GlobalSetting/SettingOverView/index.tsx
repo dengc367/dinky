@@ -37,6 +37,7 @@ import { FlinkConfig } from '@/pages/SettingCenter/GlobalSetting/SettingOverView
 import { LdapConfig } from '@/pages/SettingCenter/GlobalSetting/SettingOverView/LdapConfig';
 import { MavenConfig } from '@/pages/SettingCenter/GlobalSetting/SettingOverView/MavenConfig';
 import { MetricsConfig } from '@/pages/SettingCenter/GlobalSetting/SettingOverView/MetricsConfig';
+import { OAuthConfig } from '@/pages/SettingCenter/GlobalSetting/SettingOverView/OAuthConfig';
 import { ResourcesConfig } from '@/pages/SettingCenter/GlobalSetting/SettingOverView/ResourcesConfig';
 import { handleOption, queryDataByParams } from '@/services/BusinessCrud';
 import { RESPONSE_CODE } from '@/services/constants';
@@ -47,6 +48,7 @@ import { l } from '@/utils/intl';
 import { ProCard } from '@ant-design/pro-components';
 import { memo, useEffect, useState } from 'react';
 import { ApprovalConfig } from '@/pages/SettingCenter/GlobalSetting/SettingOverView/ApprovalConfig';
+import { SecurityScanOutlined } from '@ant-design/icons';
 
 const imgSize = 25;
 
@@ -60,6 +62,7 @@ const SettingOverView = () => {
     env: [],
     flink: [],
     maven: [],
+    oauth: [],
     ldap: [],
     metrics: [],
     resource: [],
@@ -69,7 +72,19 @@ const SettingOverView = () => {
   const fetchData = async () => {
     await queryDataByParams<Settings>(API_CONSTANTS.SYSTEM_GET_ALL_CONFIG).then((res) => {
       if (res) {
-        setData(res);
+        setData({
+          dolphinscheduler: [],
+          env: [],
+          flink: [],
+          maven: [],
+          oauth: [],
+          ldap: [],
+          metrics: [],
+          resource: [],
+          approval: [],
+          ...res,
+          oauth: res.oauth ?? []
+        });
       }
     });
   };
@@ -89,8 +104,9 @@ const SettingOverView = () => {
     if (code === RESPONSE_CODE.ERROR) {
       await fetchData();
     } else {
-      // @ts-ignore
-      for (const d of data[dataConfig.key.split('.')[1]]) {
+      const group = dataConfig.key.split('.')[1] as keyof Settings;
+      const list = data[group] ?? [];
+      for (const d of list) {
         if (d.key === dataConfig.key) {
           d.value = dataConfig.value;
           break;
@@ -105,6 +121,7 @@ const SettingOverView = () => {
       flink: flinkConfig,
       maven: mavenConfig,
       dolphinscheduler: dsConfig,
+      oauth: oauthConfig,
       ldap: ldapConfig,
       metrics: metricsConfig,
       resource: resourceConfig,
@@ -179,6 +196,23 @@ const SettingOverView = () => {
           />
         ),
         path: PermissionConstants.SETTING_GLOBAL_DS
+      },
+      {
+        key: SettingConfigKeyEnum.OAUTH,
+        label: (
+          <TagAlignCenter>
+            <SecurityScanOutlined style={{ fontSize: imgSize }} />
+            {l('sys.setting.oauth')}
+          </TagAlignCenter>
+        ),
+        children: (
+          <OAuthConfig
+            auth={PermissionConstants.SETTING_GLOBAL_OAUTH_EDIT}
+            onSave={handleSaveSubmit}
+            data={oauthConfig}
+          />
+        ),
+        path: PermissionConstants.SETTING_GLOBAL_OAUTH
       },
       {
         key: SettingConfigKeyEnum.LDAP,
