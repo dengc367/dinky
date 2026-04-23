@@ -22,9 +22,11 @@ package org.dinky.service.task;
 import org.dinky.config.Dialect;
 import org.dinky.context.TaskContextHolder;
 import org.dinky.data.annotations.SupportDialect;
+import org.dinky.data.constant.CommonConstant;
 import org.dinky.data.dto.TaskDTO;
 import org.dinky.data.exception.NotSupportExplainExcepition;
 import org.dinky.data.result.SqlExplainResult;
+import org.dinky.data.model.ClusterConfiguration;
 import org.dinky.job.JobResult;
 
 import java.util.List;
@@ -35,6 +37,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import cn.hutool.core.text.StrFormatter;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -62,6 +65,10 @@ public abstract class BaseTask {
     }
 
     public static BaseTask getTask(TaskDTO taskDTO) {
+        if (CommonConstant.CLUSTER_TYPE_KYUUBI.equalsIgnoreCase(taskDTO.type)) {
+            return new KyuubiTask(taskDTO);
+        }
+
         for (Class<?> clazz : taskRegistry) {
             SupportDialect annotation = clazz.getAnnotation(SupportDialect.class);
             if (annotation != null) {

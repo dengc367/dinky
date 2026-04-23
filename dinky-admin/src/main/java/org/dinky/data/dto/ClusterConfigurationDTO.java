@@ -20,8 +20,9 @@
 package org.dinky.data.dto;
 
 import org.dinky.data.model.ClusterConfiguration;
-import org.dinky.gateway.model.FlinkClusterConfig;
 import org.dinky.mybatis.annotation.Save;
+
+import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
@@ -65,7 +66,7 @@ public class ClusterConfigurationDTO {
             dataType = "String",
             example = "test",
             notes = "cluster config json")
-    private FlinkClusterConfig config;
+    private Map<String, Object> config;
 
     @ApiModelProperty(
             value = "isAvailable",
@@ -81,7 +82,7 @@ public class ClusterConfigurationDTO {
     public static ClusterConfigurationDTO fromBean(ClusterConfiguration bean) {
         ClusterConfigurationDTO clusterConfigurationDTO = new ClusterConfigurationDTO();
         BeanUtil.copyProperties(bean, clusterConfigurationDTO);
-        clusterConfigurationDTO.setConfig(FlinkClusterConfig.create(bean.getType(), bean.getConfigJson()));
+        clusterConfigurationDTO.setConfig(bean.getConfigJson());
         return clusterConfigurationDTO;
     }
 
