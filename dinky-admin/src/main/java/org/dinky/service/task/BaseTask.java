@@ -65,7 +65,7 @@ public abstract class BaseTask {
     }
 
     public static BaseTask getTask(TaskDTO taskDTO) {
-        if (CommonConstant.CLUSTER_TYPE_KYUUBI.equalsIgnoreCase(taskDTO.type)) {
+        if (CommonConstant.CLUSTER_TYPE_KYUUBI.equalsIgnoreCase(taskDTO.getType())) {
             return new KyuubiTask(taskDTO);
         }
 

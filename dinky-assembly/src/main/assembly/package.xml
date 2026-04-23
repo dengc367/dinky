@@ -253,6 +253,7 @@
             <outputDirectory>lib</outputDirectory>
             <includes>
                 <include>dinky-metadata-gravitino-${project.version}.jar</include>
+            </includes>
         </fileSet>
         <fileSet>
             <directory>${project.parent.basedir}/dinky-metadata/dinky-metadata-kyuubi/target

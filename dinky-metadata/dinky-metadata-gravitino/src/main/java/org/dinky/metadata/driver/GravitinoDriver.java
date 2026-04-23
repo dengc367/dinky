@@ -225,6 +225,28 @@ public class GravitinoDriver extends AbstractDriver<GravitinoConfig> {
     }
 
     @Override
+    public String getDropTableSql(Table table) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("DROP TABLE ");
+        if (Asserts.isNotNullString(table.getSchema())) {
+            sb.append(table.getSchema()).append(".");
+        }
+        sb.append(table.getName());
+        return sb.toString();
+    }
+
+    @Override
+    public String getTruncateTableSql(Table table) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("TRUNCATE TABLE ");
+        if (Asserts.isNotNullString(table.getSchema())) {
+            sb.append(table.getSchema()).append(".");
+        }
+        sb.append(table.getName());
+        return sb.toString();
+    }
+
+    @Override
     public boolean execute(String sql) {
         throw new UnsupportedOperationException("Gravitino driver does not support execute SQL");
     }
@@ -236,7 +258,9 @@ public class GravitinoDriver extends AbstractDriver<GravitinoConfig> {
 
     @Override
     public JdbcSelectResult query(String sql, Integer limit) {
-        return JdbcSelectResult.buildResult().error("Gravitino driver does not support query");
+        JdbcSelectResult result = JdbcSelectResult.buildResult();
+        result.error("Gravitino driver does not support query");
+        return result;
     }
 
     @Override
@@ -260,8 +284,10 @@ public class GravitinoDriver extends AbstractDriver<GravitinoConfig> {
     }
 
     @Override
-    public Map<String, String> getFlinkColumnTypeConversion() {
-        return Collections.emptyMap();
+    public Stream<JdbcSelectResult> StreamExecuteSql(String statement, Integer maxRowNum) {
+        JdbcSelectResult result = JdbcSelectResult.buildResult();
+        result.error("Gravitino driver does not support StreamExecuteSql");
+        return Stream.of(result);
     }
 
     private static String formatCatalogSchemaName(String catalogName, String catalogType) {

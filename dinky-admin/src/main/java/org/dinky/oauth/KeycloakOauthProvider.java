@@ -119,7 +119,7 @@ public class KeycloakOauthProvider implements OAuthProvider {
         }
 
         ObjectNode createBody = applyDinkyUserClientFields(objectMapper.createObjectNode(), user, username, null);
-        postCreateClient(rt, adminBase + "/clients", token, createBody, adminBase, username);
+        postCreateClient(rt, adminBase + "/clients", token, createBody, adminBase, username, user);
     }
 
     private void postCreateClient(
@@ -128,7 +128,8 @@ public class KeycloakOauthProvider implements OAuthProvider {
             String token,
             ObjectNode body,
             String adminBase,
-            String username) {
+            String username,
+            User user) {
         try {
             ResponseEntity<String> res =
                     rt.exchange(url, HttpMethod.POST, jsonEntity(token, body), String.class);
@@ -252,7 +253,7 @@ public class KeycloakOauthProvider implements OAuthProvider {
         return new HttpEntity<>(headers);
     }
 
-    static String normalizeBaseUrl(String raw) {
+    public static String normalizeBaseUrl(String raw) {
         String s = StrUtil.trim(raw);
         if (StrUtil.isBlank(s)) {
             throw new IllegalArgumentException("OAuth endpoint (Keycloak base URL) is blank");
