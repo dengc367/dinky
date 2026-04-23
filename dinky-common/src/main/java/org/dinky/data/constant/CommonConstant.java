@@ -32,6 +32,9 @@ public final class CommonConstant {
     /** 实例健康 */
     public static final String HEALTHY = "1";
 
+    /** Cluster configuration type: Kyuubi gateway */
+    public static final String CLUSTER_TYPE_KYUUBI = "KYUUBI";
+
     public static final String DINKY_APP_MAIN_CLASS = "org.dinky.app.MainApp";
     public static final String LineSep = System.getProperty("line.separator");
 

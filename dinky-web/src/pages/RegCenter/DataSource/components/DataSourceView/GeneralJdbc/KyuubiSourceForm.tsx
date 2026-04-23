@@ -19,13 +19,11 @@
 
 import {
   ProFormGroup,
-  ProFormList,
-  ProFormSelect,
   ProFormText,
   ProFormTextArea
 } from '@ant-design/pro-components';
 import { l } from '@/utils/intl';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { AutoComplete, Form } from 'antd';
 import { AUTO_COMPLETE_TYPE } from '@/pages/RegCenter/DataSource/components/constants';
 import TextArea from 'antd/es/input/TextArea';
@@ -36,21 +34,8 @@ type Props = {
   form: FormInstance<Values>;
 };
 
-const MODE = {
-  SESSION_JDBC: 'SESSION_JDBC',
-  BATCH_REST: 'BATCH_REST'
-};
-
 const KyuubiSourceForm: React.FC<Props> = (props) => {
   const { form } = props;
-  const [mode, setMode] = React.useState<string>(MODE.SESSION_JDBC);
-
-  useEffect(() => {
-    const v = form.getFieldsValue()?.connectConfig?.mode;
-    if (v) {
-      setMode(v);
-    }
-  });
 
   const renderJdbc = () => {
     return (
@@ -72,7 +57,10 @@ const KyuubiSourceForm: React.FC<Props> = (props) => {
           <Form.Item
             name={['connectConfig', 'url']}
             label={l('rc.ds.url')}
-            rules={[{ required: true, message: l('rc.ds.urlPlaceholder') }]}
+            rules={[
+              { required: true, message: l('rc.ds.urlPlaceholder') },
+              { pattern: /^jdbc:kyuubi:\/\//, message: 'Kyuubi URL must start with jdbc:kyuubi://' }
+            ]}
           >
             <AutoComplete
               virtual
@@ -85,7 +73,7 @@ const KyuubiSourceForm: React.FC<Props> = (props) => {
               filterOption
               onSelect={(value) => form && form.setFieldsValue({ url: value })}
             >
-              <TextArea placeholder={l('rc.ds.urlPlaceholder')} />
+              <TextArea placeholder={'jdbc:kyuubi://host:10009/;'} />
             </AutoComplete>
           </Form.Item>
         </ProFormGroup>
@@ -93,90 +81,9 @@ const KyuubiSourceForm: React.FC<Props> = (props) => {
     );
   };
 
-  const renderRest = () => {
-    return (
-      <>
-        <ProFormText
-          name={['connectConfig', 'username']}
-          width={'sm'}
-          label={l('rc.ds.username')}
-          tooltip={'REST Basic Auth username'}
-          rules={[{ required: true, message: l('rc.ds.usernamePlaceholder') }]}
-          placeholder={l('rc.ds.usernamePlaceholder')}
-        />
-        <ProFormText.Password
-          name={['connectConfig', 'password']}
-          width={'sm'}
-          label={l('rc.ds.password')}
-          tooltip={'REST Basic Auth password'}
-          placeholder={l('rc.ds.passwordPlaceholder')}
-        />
-        <ProFormText
-          name={['connectConfig', 'endpoint']}
-          width={'md'}
-          label={'endpoint'}
-          rules={[{ required: true, message: 'endpoint is required' }]}
-          placeholder={'http://host:10099'}
-        />
-        <ProFormText name={['connectConfig', 'batchType']} width={'sm'} label={'batchType'} placeholder={'SPARK'} />
-        <ProFormText name={['connectConfig', 'resource']} width={'md'} label={'resource'} />
-        <ProFormText name={['connectConfig', 'className']} width={'md'} label={'className'} />
-        <ProFormText name={['connectConfig', 'name']} width={'md'} label={'name'} />
-
-        <ProFormList
-          label={'conf'}
-          name={['connectConfig', 'conf']}
-          copyIconProps={false}
-          creatorButtonProps={{ creatorButtonText: l('rc.cc.addConfig') }}
-        >
-          <ProFormGroup key='confGroup' style={{ width: '100%' }}>
-            <ProFormText name='key' width={'md'} placeholder={l('rc.cc.key')} />
-            <ProFormText name='value' width={'xl'} placeholder={l('rc.cc.value')} />
-          </ProFormGroup>
-        </ProFormList>
-
-        <ProFormList
-          label={'args'}
-          name={['connectConfig', 'args']}
-          copyIconProps={false}
-          creatorButtonProps={{ creatorButtonText: l('rc.cc.addConfig') }}
-        >
-          <ProFormGroup key='argsGroup' style={{ width: '100%' }}>
-            <ProFormText name='value' width={'xl'} placeholder={'arg'} />
-          </ProFormGroup>
-        </ProFormList>
-
-        <ProFormList
-          label={'sessionConfigs'}
-          name={['connectConfig', 'sessionConfigs']}
-          copyIconProps={false}
-          creatorButtonProps={{ creatorButtonText: l('rc.cc.addConfig') }}
-        >
-          <ProFormGroup key='sessionConfigsGroup' style={{ width: '100%' }}>
-            <ProFormText name='key' width={'md'} placeholder={l('rc.cc.key')} />
-            <ProFormText name='value' width={'xl'} placeholder={l('rc.cc.value')} />
-          </ProFormGroup>
-        </ProFormList>
-      </>
-    );
-  };
-
   return (
     <div>
-      <ProFormSelect
-        name={['connectConfig', 'mode']}
-        width={'sm'}
-        label={'mode'}
-        initialValue={MODE.SESSION_JDBC}
-        options={[
-          { label: MODE.SESSION_JDBC, value: MODE.SESSION_JDBC },
-          { label: MODE.BATCH_REST, value: MODE.BATCH_REST }
-        ]}
-        fieldProps={{
-          onChange: (v) => setMode(v)
-        }}
-      />
-      <ProFormGroup>{mode === MODE.BATCH_REST ? renderRest() : renderJdbc()}</ProFormGroup>
+      <ProFormGroup>{renderJdbc()}</ProFormGroup>
     </div>
   );
 };

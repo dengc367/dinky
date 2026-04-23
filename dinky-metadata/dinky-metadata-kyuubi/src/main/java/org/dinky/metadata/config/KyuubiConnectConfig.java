@@ -19,48 +19,14 @@
 
 package org.dinky.metadata.config;
 
-import org.dinky.metadata.constant.KyuubiConstant;
-
-import java.util.List;
-import java.util.Map;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @ApiModel(value = "KyuubiConnectConfig", description = "Configuration for Kyuubi connection")
 public class KyuubiConnectConfig extends AbstractJdbcConfig {
-
-    @ApiModelProperty(value = "Kyuubi mode: SESSION_JDBC or BATCH_REST", dataType = "String", example = "SESSION_JDBC")
-    private KyuubiConstant.Mode mode;
-
-    @ApiModelProperty(value = "Kyuubi REST endpoint, e.g. http://host:10099", dataType = "String")
-    private String endpoint;
-
-    @ApiModelProperty(value = "Kyuubi batch type, e.g. SPARK/FLINK", dataType = "String", example = "SPARK")
-    private String batchType;
-
-    @ApiModelProperty(value = "Batch resource path (required for REST batch)", dataType = "String")
-    private String resource;
-
-    @ApiModelProperty(value = "Batch main class name (required for REST batch)", dataType = "String")
-    private String className;
-
-    @ApiModelProperty(value = "Batch name", dataType = "String")
-    private String name;
-
-    @ApiModelProperty(value = "Batch conf properties", dataType = "Map")
-    private Map<String, String> conf;
-
-    @ApiModelProperty(value = "Batch args", dataType = "List")
-    private List<String> args;
-
-    @ApiModelProperty(value = "REST session configs used to create session", dataType = "Map")
-    private Map<String, String> sessionConfigs;
 }
 

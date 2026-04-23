@@ -31,28 +31,17 @@
 
     <name>Dinky : Metadata : Kyuubi</name>
 
-    <properties>
-        <kyuubi.version>1.11.1</kyuubi.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.dinky</groupId>
             <artifactId>dinky-metadata-base</artifactId>
         </dependency>
 
-        <!-- Official Kyuubi REST client for BATCH_REST mode -->
-        <dependency>
-            <groupId>org.apache.kyuubi</groupId>
-            <artifactId>kyuubi-rest-client</artifactId>
-            <version>${kyuubi.version}</version>
-        </dependency>
-
-        <!-- Optional: use Kyuubi JDBC driver for SESSION_JDBC mode -->
+        <!-- Kyuubi JDBC driver -->
         <dependency>
             <groupId>org.apache.kyuubi</groupId>
             <artifactId>kyuubi-hive-jdbc-shaded</artifactId>
-            <version>${kyuubi.version}</version>
+            <version>1.11.1</version>
             <scope>${scope.runtime}</scope>
         </dependency>
     </dependencies>

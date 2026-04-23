@@ -21,30 +21,6 @@ package org.dinky.metadata.constant;
 
 public interface KyuubiConstant {
 
-    enum Mode {
-        SESSION_JDBC,
-        BATCH_REST
-    }
-
-    /** config keys */
-    String KEY_MODE = "mode";
-    String KEY_ENDPOINT = "endpoint";
-    String KEY_BATCH_TYPE = "batchType";
-    String KEY_RESOURCE = "resource";
-    String KEY_CLASS_NAME = "className";
-    String KEY_NAME = "name";
-    String KEY_CONF = "conf";
-    String KEY_ARGS = "args";
-    String KEY_SESSION_CONFIGS = "sessionConfigs";
-
-    /** REST v1 prefix */
-    String API_V1 = "/api/v1";
-
-    /** REST resources */
-    String SESSIONS = "/sessions";
-    String BATCHES = "/batches";
-    String OPERATIONS = "/operations";
-
     /** SQL helpers (Kyuubi/Hive compatible) */
     String QUERY_ALL_DATABASE = "show databases";
     /** 指定 schema 下全部表（显式 in，无需先 use） */

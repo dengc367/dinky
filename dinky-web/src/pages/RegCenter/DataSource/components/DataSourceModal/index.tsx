@@ -107,13 +107,6 @@ const DataSourceModal: React.FC<DataSourceModalProps> = (props) => {
       });
       connectConfig.conf = conf;
     }
-    if (Array.isArray(connectConfig.sessionConfigs)) {
-      const conf: Record<string, string> = {};
-      connectConfig.sessionConfigs.forEach((kv: any) => {
-        if (kv?.key) conf[kv.key] = kv?.value;
-      });
-      connectConfig.sessionConfigs = conf;
-    }
     if (Array.isArray(connectConfig.args)) {
       connectConfig.args = connectConfig.args
         .map((a: any) => (a && typeof a === 'object' ? a.value : a))
