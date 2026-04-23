@@ -27,6 +27,7 @@ export enum ClusterType {
   KUBERNETES_APPLICATION = 'kubernetes-application',
   KUBERNETES_OPERATOR = 'kubernetes-application-operator',
   YARN_APPLICATION = 'yarn-application',
+  KYUUBI = 'kyuubi',
   SQL_GATEWAY = 'sql-gateway',
   LOCAL = 'local'
 }
@@ -65,6 +66,13 @@ export const CLUSTER_TYPE_OPTIONS = (isClusterConfig: boolean = false): DefaultO
   },
   isClusterConfig
     ? {
+        value: ClusterType.KYUUBI,
+        label: 'Kyuubi Gateway',
+        key: ClusterType.KYUUBI
+      }
+    : null,
+  isClusterConfig
+    ? {
         value: ClusterType.YARN,
         label: (
           <span>
@@ -83,7 +91,7 @@ export const CLUSTER_TYPE_OPTIONS = (isClusterConfig: boolean = false): DefaultO
     label: 'Local',
     key: ClusterType.LOCAL
   }
-];
+].filter(Boolean) as DefaultOptionType[];
 
 /**
  * Cluster instance type

@@ -155,7 +155,8 @@ export type FlinkTaskRunType =
   | 'yarn-application'
   | 'kubernetes-session'
   | 'kubernetes-application'
-  | 'kubernetes-application-operator';
+  | 'kubernetes-application-operator'
+  | 'kyuubi';
 
 /**
  * @description:

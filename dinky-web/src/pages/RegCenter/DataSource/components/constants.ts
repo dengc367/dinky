@@ -35,6 +35,7 @@ export const DATA_SOURCE_TYPE = {
   HIVE: 'Hive',
   PAIMON: 'Paimon',
   GRAVITINO: 'Gravitino'
+  KYUUBI: 'Kyuubi'
 };
 /**
  * data source type
@@ -101,6 +102,8 @@ export const DATA_SOURCE_TYPE_OPTIONS = [
       {
         label: 'Gravitino',
         value: DATA_SOURCE_TYPE.GRAVITINO
+        label: 'Kyuubi',
+        value: DATA_SOURCE_TYPE.KYUUBI
       }
     ]
   }
@@ -190,6 +193,11 @@ export const AUTO_COMPLETE_TYPE = [
     key: 'presto',
     value: 'jdbc:presto://localhost:8080/dinky',
     label: 'jdbc:presto://localhost:8080/dinky'
+  },
+  {
+    key: 'kyuubi',
+    value: 'jdbc:kyuubi://localhost:10009/',
+    label: 'jdbc:kyuubi://localhost:10009/'
   }
 ];
 

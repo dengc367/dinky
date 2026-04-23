@@ -21,6 +21,7 @@ import ApplicationConfig from '@/pages/RegCenter/Cluster/Configuration/component
 import BaseConfig from '@/pages/RegCenter/Cluster/Configuration/components/ConfigurationModal/ConfigurationForm/BaseConfig';
 import FlinkK8s from '@/pages/RegCenter/Cluster/Configuration/components/ConfigurationModal/ConfigurationForm/FlinkK8s';
 import HighPriorityConfig from '@/pages/RegCenter/Cluster/Configuration/components/ConfigurationModal/ConfigurationForm/HighPriorityConfig';
+import KyuubiConfig from '@/pages/RegCenter/Cluster/Configuration/components/ConfigurationModal/ConfigurationForm/KyuubiConfig';
 import { YarnConfig } from '@/pages/RegCenter/Cluster/Configuration/components/ConfigurationModal/ConfigurationForm/YarnConfig';
 import { ClusterType } from '@/pages/RegCenter/Cluster/constants';
 import { ProForm } from '@ant-design/pro-components';
@@ -47,7 +48,9 @@ const ConfigurationForm: React.FC<ConfigurationFormProps> = (props) => {
     return (
       <>
         <BaseConfig />
-        {type && type === ClusterType.YARN ? (
+        {type && type === ClusterType.KYUUBI ? (
+          <KyuubiConfig />
+        ) : type && type === ClusterType.YARN ? (
           <YarnConfig flinkConfigOptions={data} />
         ) : (
           <FlinkK8s type={type} value={value} form={form} flinkConfigOptions={data} />

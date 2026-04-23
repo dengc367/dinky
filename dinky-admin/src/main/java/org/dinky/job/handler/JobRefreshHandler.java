@@ -320,7 +320,8 @@ public class JobRefreshHandler {
             try {
                 String appId = jobInfoDetail.getClusterInstance().getName();
 
-                GatewayConfig gatewayConfig = GatewayConfig.build(clusterCfg.getConfig());
+                FlinkClusterConfig flinkClusterConfig = JsonUtils.convertValue(clusterCfg.getConfig(), FlinkClusterConfig.class);
+                GatewayConfig gatewayConfig = GatewayConfig.build(flinkClusterConfig);
                 gatewayConfig.getClusterConfig().setAppId(appId);
                 gatewayConfig
                         .getFlinkConfig()
@@ -348,7 +349,8 @@ public class JobRefreshHandler {
 
         if (GatewayType.isDeployCluster(clusterType)) {
             JobConfig jobConfig = new JobConfig();
-            FlinkClusterConfig configJson = jobDataDto.getClusterConfiguration().getConfigJson();
+            FlinkClusterConfig configJson = JsonUtils.convertValue(
+                    jobDataDto.getClusterConfiguration().getConfigJson(), FlinkClusterConfig.class);
             jobConfig.buildGatewayConfig(configJson);
             jobConfig.getGatewayConfig().setType(GatewayType.get(clusterType));
             jobConfig.getGatewayConfig().getFlinkConfig().setJobName(jobInstance.getName());
@@ -466,7 +468,8 @@ public class JobRefreshHandler {
             if (!Asserts.isNull(clusterCfg)) {
                 String appId = jobInfoDetail.getClusterInstance().getName();
 
-                GatewayConfig gatewayConfig = GatewayConfig.build(clusterCfg.getConfig());
+                FlinkClusterConfig flinkClusterConfig = JsonUtils.convertValue(clusterCfg.getConfig(), FlinkClusterConfig.class);
+                GatewayConfig gatewayConfig = GatewayConfig.build(flinkClusterConfig);
                 gatewayConfig.getClusterConfig().setAppId(appId);
                 gatewayConfig
                         .getFlinkConfig()

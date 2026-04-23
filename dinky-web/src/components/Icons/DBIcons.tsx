@@ -336,6 +336,33 @@ export const HiveIcons = (props: any) => {
   );
 };
 
+export const KyuubiIcons = (props: any) => {
+  const size = props.size || defaultSvgSize;
+  return (
+    <>
+      <Icon
+        style={style}
+        component={() => (
+          <svg
+            className='icon'
+            viewBox='0 0 1024 1024'
+            version='1.1'
+            xmlns='http://www.w3.org/2000/svg'
+            width={size}
+            height={size}
+          >
+            <rect x='96' y='96' width='832' height='832' rx='176' ry='176' fill='#E85D04' />
+            <path
+              d='M260 200 L260 824 L400 824 L400 560 L560 824 L724 824 L488 512 L700 200 L556 200 L400 448 L400 200 Z'
+              fill='#FFFFFF'
+            />
+          </svg>
+        )}
+      />
+    </>
+  );
+};
+
 export const StarRocksIcons = (props: any) => {
   const size = props.size || defaultSvgSize;
   return (

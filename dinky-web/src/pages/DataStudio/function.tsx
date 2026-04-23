@@ -45,6 +45,7 @@ import {
   ClickHouseIcons,
   DorisIcons,
   HiveIcons,
+  KyuubiIcons,
   MysqlIcons,
   OracleIcons,
   PhoenixIcons,
@@ -227,6 +228,8 @@ export const getTabIcon = (type: string, size?: number) => {
       return <PhoenixIcons size={size} />;
     case DIALECT.HIVE:
       return <HiveIcons size={size} />;
+    case DIALECT.KYUUBI:
+      return <KyuubiIcons size={size} />;
     case DIALECT.STARROCKS:
       return <StarRocksIcons size={size} />;
     case DIALECT.PRESTO:
@@ -328,6 +331,7 @@ export const matchLanguage = (language = DIALECT.FLINK_SQL) => {
     case DIALECT.SQLSERVER:
     case DIALECT.POSTGRESQL:
     case DIALECT.HIVE:
+    case DIALECT.KYUUBI:
     case DIALECT.CLICKHOUSE:
     case DIALECT.ORACLE:
     case DIALECT.DORIS:

@@ -28,12 +28,15 @@ import org.dinky.data.model.ClusterConfiguration;
 import org.dinky.data.model.Task;
 import org.dinky.gateway.config.GatewayConfig;
 import org.dinky.gateway.model.FlinkClusterConfig;
+import org.dinky.gateway.model.KyuubiGatewayConfig;
+import org.dinky.gateway.kyuubi.KyuubiGatewayClient;
 import org.dinky.gateway.result.TestResult;
 import org.dinky.job.JobManager;
 import org.dinky.mapper.ClusterConfigurationMapper;
 import org.dinky.mybatis.service.impl.SuperServiceImpl;
 import org.dinky.service.ClusterConfigurationService;
 import org.dinky.service.TaskService;
+import org.dinky.utils.JsonUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -76,20 +79,27 @@ public class ClusterConfigurationServiceImpl extends SuperServiceImpl<ClusterCon
         ClusterConfiguration cfg = this.getClusterConfigById(id);
         DinkyAssert.checkNull(cfg, "The clusterConfiguration not exists!");
         DinkyAssert.checkEnable(cfg, "The cluster is Disable!");
-        return FlinkClusterConfig.create(cfg.getType(), cfg.getConfigJson());
+        FlinkClusterConfig flinkClusterConfig = JsonUtils.convertValue(cfg.getConfigJson(), FlinkClusterConfig.class);
+        return FlinkClusterConfig.create(cfg.getType(), flinkClusterConfig);
     }
 
     @Override
     public FlinkClusterConfig getFlinkClusterCfg(Integer id) {
         ClusterConfiguration cfg = this.getClusterConfigById(id);
         DinkyAssert.checkNull(cfg, "The clusterConfiguration not exists!");
-        return FlinkClusterConfig.create(cfg.getType(), cfg.getConfigJson());
+        FlinkClusterConfig flinkClusterConfig = JsonUtils.convertValue(cfg.getConfigJson(), FlinkClusterConfig.class);
+        return FlinkClusterConfig.create(cfg.getType(), flinkClusterConfig);
     }
 
     @Override
     public TestResult testGateway(ClusterConfigurationDTO config) {
-        config.getConfig().setType(GatewayType.get(config.getType()));
-        return JobManager.testGateway(GatewayConfig.build(config.getConfig()));
+        if ("kyuubi".equalsIgnoreCase(config.getType())) {
+            KyuubiGatewayConfig kyuubiCfg = JsonUtils.convertValue(config.getConfig(), KyuubiGatewayConfig.class);
+            return new KyuubiGatewayClient().test(kyuubiCfg);
+        }
+        FlinkClusterConfig flinkClusterConfig = JsonUtils.convertValue(config.getConfig(), FlinkClusterConfig.class);
+        flinkClusterConfig.setType(GatewayType.get(config.getType()));
+        return JobManager.testGateway(GatewayConfig.build(flinkClusterConfig));
     }
 
     /**

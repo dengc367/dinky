@@ -39,7 +39,8 @@ export const SelectFlinkRunMode = memo((props: { data: FlinkCluster[] }) => {
     'yarn-application': [],
     'kubernetes-session': [],
     'kubernetes-application': [],
-    'kubernetes-application-operator': []
+    'kubernetes-application-operator': [],
+    kyuubi: []
   } as Record<string, Option[]>;
   data.forEach((item) => {
     if (item.type === 'yarn-application') {

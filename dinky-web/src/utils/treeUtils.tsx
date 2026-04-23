@@ -201,6 +201,7 @@ export const showBadge = (type: string) => {
     case DIALECT.PHOENIX:
     case DIALECT.DORIS:
     case DIALECT.HIVE:
+    case DIALECT.KYUUBI:
     case DIALECT.STARROCKS:
     case DIALECT.PRESTO:
     case DIALECT.FLINK_SQL:

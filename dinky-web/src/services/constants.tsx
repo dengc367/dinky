@@ -228,6 +228,7 @@ export const DIALECT = {
   PHOENIX: 'phoenix',
   STARROCKS: 'starrocks',
   PRESTO: 'presto',
+  KYUUBI: 'kyuubi',
   TERMINAL: 'terminal',
   PAIMON: 'paimon'
 };

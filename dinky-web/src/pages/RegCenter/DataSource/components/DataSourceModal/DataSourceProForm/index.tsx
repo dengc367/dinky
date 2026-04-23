@@ -41,6 +41,7 @@ import React, { useState } from 'react';
 import PaimonSourceForm from '@/pages/RegCenter/DataSource/components/DataSourceView/GeneralJdbc/PaimonSourceForm';
 import JdbcSourceForm from '@/pages/RegCenter/DataSource/components/DataSourceView/GeneralJdbc/JdbcSourceForm';
 import GravitinoSourceForm from '@/pages/RegCenter/DataSource/components/DataSourceView/Gravitino/GravitinoSourceForm';
+import KyuubiSourceForm from '@/pages/RegCenter/DataSource/components/DataSourceView/GeneralJdbc/KyuubiSourceForm';
 
 type DataSourceProFormProps = {
   values: Partial<DataSources.DataSource>;
@@ -68,6 +69,8 @@ const DataSourceProForm: React.FC<DataSourceProFormProps> = (props) => {
         return <PaimonSourceForm form={form} />;
       case DATA_SOURCE_TYPE.GRAVITINO:
         return <GravitinoSourceForm form={form} />;
+      case DATA_SOURCE_TYPE.KYUUBI:
+        return <KyuubiSourceForm form={form} />;
       default:
         return <JdbcSourceForm form={form} />;
     }

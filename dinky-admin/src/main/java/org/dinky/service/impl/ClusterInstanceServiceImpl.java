@@ -44,6 +44,7 @@ import org.dinky.service.ClusterConfigurationService;
 import org.dinky.service.ClusterInstanceService;
 import org.dinky.service.TaskService;
 import org.dinky.utils.IpUtil;
+import org.dinky.utils.JsonUtils;
 import org.dinky.utils.URLUtils;
 
 import java.time.LocalDateTime;
@@ -233,15 +234,15 @@ public class ClusterInstanceServiceImpl extends SuperServiceImpl<ClusterInstance
         DinkyAssert.checkEnable(clusterCfg, "The cluster is Disable!");
 
         // add custom configuration.
-        FlinkConfig flinkConfig = clusterCfg.getConfigJson().getFlinkConfig();
+        FlinkClusterConfig flinkClusterConfig = JsonUtils.convertValue(clusterCfg.getConfigJson(), FlinkClusterConfig.class);
+        FlinkConfig flinkConfig = flinkClusterConfig.getFlinkConfig();
         for (CustomConfig customConfig : flinkConfig.getFlinkConfigList()) {
             Assert.notNull(customConfig.getName(), "Custom flink config has null key");
             Assert.notNull(customConfig.getValue(), "Custom flink config has null value");
             flinkConfig.getConfiguration().put(customConfig.getName(), customConfig.getValue());
         }
 
-        GatewayConfig gatewayConfig =
-                GatewayConfig.build(FlinkClusterConfig.create(clusterCfg.getType(), clusterCfg.getConfigJson()));
+        GatewayConfig gatewayConfig = GatewayConfig.build(FlinkClusterConfig.create(clusterCfg.getType(), flinkClusterConfig));
         gatewayConfig.setType(gatewayConfig.getType().getSessionType());
         GatewayResult gatewayResult = JobManager.deploySessionCluster(gatewayConfig);
         if (gatewayResult.isSuccess()) {

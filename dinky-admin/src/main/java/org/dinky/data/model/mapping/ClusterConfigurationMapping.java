@@ -20,8 +20,8 @@
 package org.dinky.data.model.mapping;
 
 import org.dinky.data.model.ClusterConfiguration;
-import org.dinky.gateway.model.FlinkClusterConfig;
 
+import java.util.Map;
 import java.time.LocalDateTime;
 
 import cn.hutool.core.bean.BeanUtil;
@@ -76,7 +76,7 @@ public class ClusterConfigurationMapping {
             dataType = "String",
             example = "test",
             notes = "cluster config json")
-    private FlinkClusterConfig configJson;
+    private Map<String, Object> configJson;
 
     @ApiModelProperty(
             value = "isAvailable",
